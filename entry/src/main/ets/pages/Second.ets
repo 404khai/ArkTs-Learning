@@ -1,16 +1,19 @@
+// Second.ets
+// Import the router module.
+import { BusinessError } from '@kit.BasicServicesKit';
+
 @Entry
 @Component
-
-struct Second{
+struct Second {
   @State message: string = 'Hi there';
 
   build() {
-    Row(){
-      Column(){
+    Row() {
+      Column() {
         Text(this.message)
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
-        Button(){
+        Button() {
           Text('Back')
             .fontSize(30)
             .fontWeight(FontWeight.Bold)
@@ -22,6 +25,22 @@ struct Second{
         .backgroundColor('#0D9FFB')
         .width('40%')
         .height('5%')
+        // Bind the onClick event to the Back button so that clicking the button redirects the user back to the first page.
+        .onClick(() => {
+          console.info(`Succeeded in clicking the 'Back' button.`)
+          // Obtain UIContext.
+          let uiContext: UIContext = this.getUIContext();
+          let router = uiContext.getRouter();
+          try {
+            // Return to the first page.
+            router.back()
+            console.info('Succeeded in returning to the first page.')
+          } catch (err) {
+            let code = (err as BusinessError).code;
+            let message = (err as BusinessError).message;
+            console.error(`Failed to return to the first page. Code is ${code}, message is ${message}`)
+          }
+        })
       }
       .width('100%')
     }
