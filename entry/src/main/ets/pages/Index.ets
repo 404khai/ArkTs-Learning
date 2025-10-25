@@ -1,3 +1,5 @@
+import {BusinessError} from '@kit.BasicServicesKit'
+
 @Entry
 @Component
 struct Index {
@@ -10,6 +12,7 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
 
+        //Add a button to respond to onClick events
         Button(){
           Text('Next')
             .fontSize(30)
@@ -22,6 +25,20 @@ struct Index {
         .backgroundColor('#0D9FFE')
         .width('40%')
         .height('5%')
+
+        .onClick(() => {
+          console.info('Succeeded in clicking the Nex Button')
+
+          // Obtain UIContext
+          let uiContext: UIContext = this.getUIContext();
+          let router = uiContext.getRouter();
+          // Redirect to Second page
+          router.pushUrl({url: 'pages/Second'}).then(() => {
+            console.info('Succeeded in jumping to the second page')
+          }).catch((err: BusinessError) => {
+            console.error(`Failed to jump to the second page. Code is ${err.code}, message is ${err.message}`)
+          })
+        })
       }
       .width('100%')
     }
